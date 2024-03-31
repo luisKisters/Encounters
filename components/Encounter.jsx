@@ -1,10 +1,11 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const Encounter = () => {
+const Encounter = (props) => {
 	return (
 		<View>
-			<Text>Encounter</Text>
+			<Text>Title: {props.title}</Text>
+			<Text>Content: {props.content}</Text>
 		</View>
 	);
 };
