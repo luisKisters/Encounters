@@ -8,48 +8,52 @@ import {
 	TouchableOpacity,
 	TextInput,
 } from "react-native";
-import Voice from "@react-native-voice/voice";
-
-import MicrophonePermission from "./components/MicrophonePermission";
-import VoiceTest from "./components/VoiceTest";
+import Encounter from "./components/Encounter";
 
 export default function App() {
-	const [Encounter, setEncounter] = useState("");
-	const [Input, setInput] = useState("");
-	const [isPermissionGranted, setIsPermissionGranted] = useState(false);
+	// let encountersArr = [];
+	const [Encounters, setEncounters] = useState([]);
+	const [Title, setTitle] = useState("");
+	const [Content, setContent] = useState("");
 
 	useEffect(() => {
-		const requestAudioRecordingPermission = async () => {
-			const { status } = await Permissions.askAsync(
-				Permissions.AUDIO_RECORDING
-			);
-			setIsPermissionGranted(status === "granted");
-		};
+		console.log("Encounters", Encounters);
+		// console.log("encountersArr", encountersArr);
+	}, [Encounters]);
 
-		requestAudioRecordingPermission();
-	}, []);
-
-	const handlePress = () => {
-		if (isPermissionGranted) {
-			setEncounter(Input);
-		} else {
-			alert("Permission to record audio is not granted.");
-		}
-	};
+	function handleSubmit() {
+		// encountersArr.push({ title: Title, content: Content });
+		// setEncounters(encountersArr);
+		const newEncounter = { title: Title, content: Content };
+		setEncounters([...Encounters, newEncounter]);
+		setTitle("");
+		setContent("");
+	}
 
 	return (
 		<View style={styles.container}>
+			<Text>Title</Text>
 			<TextInput
 				style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
-				onChangeText={setInput}
-				value={Input}
+				onChangeText={setTitle}
+				value={Title}
 			/>
-			<TouchableOpacity onPress={handlePress}>
+			<Text>Content</Text>
+			<TextInput
+				style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+				onChangeText={setContent}
+				value={Content}
+			/>
+			<TouchableOpacity
+				// onPress={() => encounters.push({ title: Title, content: Content })}
+				onPress={() => handleSubmit()}
+			>
 				<Text>Submit</Text>
 			</TouchableOpacity>
-			<Text>Encounter: {Encounter}</Text>
-			{/* <VoiceTest /> */}
-			<MicrophonePermission />
+			{/* <TouchableOpacity onPress={() => console.log(encounters)}>
+				Print Encounters
+			</TouchableOpacity> */}
+			{/* <Text>encounter: {[Encounters]}</Text> */}
 		</View>
 	);
 }
